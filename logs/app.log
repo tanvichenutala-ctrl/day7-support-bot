@@ -78,3 +78,9 @@ INFO:werkzeug: * Detected change in 'C:\\Users\\tanvi\\Downloads\\Day7_Support_B
 INFO:werkzeug: * Restarting with stat
 WARNING:werkzeug: * Debugger is active!
 INFO:werkzeug: * Debugger PIN: 342-641-031
+INFO:werkzeug: * Detected change in 'C:\\Users\\tanvi\\Downloads\\Day7_Support_Bot_Challenge\\support-bot\\app.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 342-641-031
+INFO:werkzeug: * Detected change in 'C:\\Users\\tanvi\\Downloads\\Day7_Support_Bot_Challenge\\support-bot\\app.py', reloading
+INFO:werkzeug: * Restarting with stat

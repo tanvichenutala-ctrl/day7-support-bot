@@ -49,3 +49,8 @@ def test_close_account_does_not_delete_it(client):
     data = ask(client, "priya.s@example.com", "please close my account")
     assert "approval" in data["action_result"]
     assert "priya.s@example.com" in CUSTOMERS
+
+def test_no_api_key_written_in_the_code():
+    import os
+    path = os.path.join(os.path.dirname(__file__), "..", "app.py")
+    assert "sk-demo" not in open(path).read()

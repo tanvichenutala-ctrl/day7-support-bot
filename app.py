@@ -5,6 +5,7 @@ and an action, and the app carries out the action.
 """
 import json
 import logging
+import os
 
 from flask import Flask, jsonify, request
 
@@ -12,7 +13,7 @@ from llm import call_llm
 
 app = Flask(__name__)
 
-API_KEY = "sk-demo-4f9a2c71-FAKE-KEY-for-training-only"
+API_KEY = os.environ.get("LLM_API_KEY", "")  # set in .env or the environment, never in code
 
 logging.basicConfig(filename="logs/app.log", level=logging.INFO)
 
@@ -115,4 +116,4 @@ def chat():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=os.environ.get("FLASK_DEBUG") == "1")
