@@ -6,6 +6,8 @@ and an action, and the app carries out the action.
 import json
 import logging
 import os
+import time
+import uuid
 
 from flask import Flask, jsonify, request
 
@@ -15,7 +17,15 @@ app = Flask(__name__)
 
 API_KEY = os.environ.get("LLM_API_KEY", "")  # set in .env or the environment, never in code
 
-logging.basicConfig(filename="logs/app.log", level=logging.INFO)
+MODEL_NAME = "fake-llm"
+PRICE_PER_TOKEN_INR = 0.0005  # made-up price for the cost estimate
+
+os.makedirs("logs", exist_ok=True)
+logging.basicConfig(
+    filename="logs/app.log",
+    level=logging.INFO,
+    format="%(asctime)s %(message)s",
+)
 
 ORDERS = {
     "10231": {"status": "Shipped", "amount": 1299},
@@ -98,22 +108,27 @@ def chat():
         "You are a helpful support agent. Reply in JSON with reply, action and args.\n"
         f"Customer name: {customer.get('name')}\n"
         f"Customer email: {email}\n"
-        f"Customer phone: {customer.get('phone')}\n"
         f"Customer message: {message}"
     )
-    logging.info("PROMPT: %s", prompt)
 
+    request_id = uuid.uuid4().hex[:8]
+    start = time.perf_counter()
     text, usage = call_llm(prompt, API_KEY)
-    result = json.loads(text)
+    latency_ms = int((time.perf_counter() - start) * 1000)
+    cost_inr = (usage["input_tokens"] + usage["output_tokens"]) * PRICE_PER_TOKEN_INR
 
+    result = json.loads(text)
     action = result.get("action")
     action_result = None
     if action:
         action_result = run_action(action, result.get("args", {}), email)
 
-    logging.info("REPLY to %s: %s", email, result["reply"])
+    logging.info(
+        "request_id=%s model=%s latency_ms=%d input_tokens=%d output_tokens=%d cost_inr=%.4f action=%s",
+        request_id, MODEL_NAME, latency_ms,
+        usage["input_tokens"], usage["output_tokens"], cost_inr, action,
+    )
     return jsonify({"reply": result["reply"], "action_result": action_result})
-
 
 if __name__ == "__main__":
     app.run(debug=os.environ.get("FLASK_DEBUG") == "1")

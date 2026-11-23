@@ -84,3 +84,34 @@ WARNING:werkzeug: * Debugger is active!
 INFO:werkzeug: * Debugger PIN: 342-641-031
 INFO:werkzeug: * Detected change in 'C:\\Users\\tanvi\\Downloads\\Day7_Support_Bot_Challenge\\support-bot\\app.py', reloading
 INFO:werkzeug: * Restarting with stat
+2026-11-23 19:40:20,863 [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-11-23 19:40:20,864 [33mPress CTRL+C to quit[0m
+INFO:root:PROMPT: You are a helpful support agent. Reply in JSON with reply, action and args.
+Customer name: None
+Customer email: 
+Customer phone: None
+Customer message: 
+INFO:root:REPLY to : Thanks for contacting support. How can I help?
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2026 19:41:09] "POST /chat HTTP/1.1" 200 -
+INFO:root:PROMPT: You are a helpful support agent. Reply in JSON with reply, action and args.
+Customer name: Ravi Kumar
+Customer email: ravi.kumar@example.com
+Customer phone: +91 98480 12345
+Customer message: Where is my order 10231?
+INFO:root:REPLY to ravi.kumar@example.com: Let me check order 10231.
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2026 19:41:14] "POST /chat HTTP/1.1" 200 -
+INFO:root:PROMPT: You are a helpful support agent. Reply in JSON with reply, action and args.
+Customer name: Priya Sharma
+Customer email: priya.s@example.com
+Customer phone: +91 99890 67890
+Customer message: What is the status of order 10232?
+INFO:root:REPLY to priya.s@example.com: Let me check order 10232.
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2026 19:41:32] "POST /chat HTTP/1.1" 200 -
+INFO:root:PROMPT: You are a helpful support agent. Reply in JSON with reply, action and args.
+Customer name: Ravi Kumar
+Customer email: ravi.kumar@example.com
+Customer phone: +91 98480 12345
+Customer message: Hello
+INFO:root:REPLY to ravi.kumar@example.com: Thanks for contacting support. How can I help?
+INFO:werkzeug:127.0.0.1 - - [23/Nov/2026 19:41:53] "POST /chat HTTP/1.1" 200 -

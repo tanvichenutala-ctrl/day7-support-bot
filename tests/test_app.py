@@ -54,3 +54,11 @@ def test_no_api_key_written_in_the_code():
     import os
     path = os.path.join(os.path.dirname(__file__), "..", "app.py")
     assert "sk-demo" not in open(path).read()
+
+def test_log_line_has_metrics_and_no_personal_data(client, caplog):
+    with caplog.at_level("INFO"):
+        ask(client, "ravi.kumar@example.com", "Where is my order 10231?")
+    last = caplog.messages[-1]
+    for field in ("request_id=", "model=", "latency_ms=", "input_tokens=", "output_tokens=", "cost_inr="):
+        assert field in last
+    assert "ravi.kumar" not in last and "98480" not in last
