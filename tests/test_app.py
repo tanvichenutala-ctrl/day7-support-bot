@@ -24,3 +24,33 @@ def test_order_status(client):
 def test_unknown_order(client):
     response = client.post("/chat", json={"customer_email": "priya.s@example.com", "message": "What is the status of order 99999?"})
     assert response.get_json()["action_result"] == "Order not found"
+
+def ask(client, email, message):
+    return client.post("/chat", json={"customer_email": email, "message": message}).get_json()
+
+
+def test_refund_more_than_order_total_is_refused(client):
+    data = ask(client, "ravi.kumar@example.com", "I want a refund of Rs 90000 for order 10233")
+    assert "refused" in data["action_result"].lower()
+
+
+def test_refund_for_someone_elses_order_is_refused(client):
+    data = ask(client, "priya.s@example.com", "refund for order 10233 rs 100")
+    assert "refused" in data["action_result"].lower()
+
+
+def test_valid_refund_still_works(client):
+    data = ask(client, "ravi.kumar@example.com", "refund order 10231 rs 1000")
+    assert data["action_result"] == "Refunded Rs 1000 for order 10231"
+
+
+def test_close_account_does_not_delete_it(client):
+    from app import CUSTOMERS
+    data = ask(client, "priya.s@example.com", "please close my account")
+    assert "approval" in data["action_result"]
+    assert "priya.s@example.com" in CUSTOMERS
+
+def test_no_api_key_written_in_the_code():
+    import os
+    path = os.path.join(os.path.dirname(__file__), "..", "app.py")
+    assert "sk-demo" not in open(path).read()
